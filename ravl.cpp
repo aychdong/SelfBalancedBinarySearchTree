@@ -2,15 +2,13 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
-#include <windows.h>
-#include <stdio.h>
 using std::cout;
 using std::endl;
 
 using namespace std;
 
 template <typename T>
-class WeakAVLTree
+class RelaxedAVLTree
 {
     private:
 
@@ -35,19 +33,19 @@ class WeakAVLTree
 
     public:
 
-        WeakAVLTree(){
+        RelaxedAVLTree(){
             root = NULL;
             tree_size = 0;
         }
-        WeakAVLTree(WeakAVLTree & rhs){
+        RelaxedAVLTree(RelaxedAVLTree & rhs){
             this->root = clone(rhs.root);
             this->tree_size = rhs.size();
         }
-        ~WeakAVLTree(){
+        ~RelaxedAVLTree(){
             clear();
         }
 
-        const WeakAVLTree & operator = (const WeakAVLTree & rhs){
+        const RelaxedAVLTree & operator = (const RelaxedAVLTree & rhs){
             if (this != &rhs){
                 this->clear();
                 this->root = clone(rhs.root);
@@ -352,7 +350,7 @@ class WeakAVLTree
                 node->left = node->right = node->parent = NULL;
                 delete node;
 
-                fixAfterRemove(replacement->parent, sibling, replacement);
+                //fixAfterRemove(replacement->parent, sibling, replacement);
             }
             else if(node->parent == NULL){
                 root =NULL;
@@ -371,8 +369,9 @@ class WeakAVLTree
                     sibling = node->parent->left;
                 }
                 node->parent = NULL;
-                node->rank--;
-                fixAfterRemove(victimParent, sibling, node);
+                delete node;
+                //node->rank--;
+                //fixAfterRemove(victimParent, sibling, node);
             }
         }
 
@@ -395,10 +394,10 @@ class WeakAVLTree
                 return (node->left->rank == node->right->rank && node->left->rank+2 == node->rank);
             }
         }
-
+/*
         void fixAfterRemove(RankBalancedNode * & parent, RankBalancedNode * & sibling, RankBalancedNode * & node){
             int rankDiff = parent->rank - node->rank;
-            //if (node->parent == NULL) delete node; //node is a leaf, should be delete.
+            if (node->parent == NULL) delete node; //node is a leaf, should be delete.
             while(rankDiff == 3 || parent->rank ==1 && isNode22(parent)){
                 int rankDiffSibling = (sibling == NULL)? parent->rank+1 : parent->rank - sibling->rank;
                 if(rankDiffSibling == 2){
@@ -463,30 +462,25 @@ class WeakAVLTree
                 rankDiff = parent->rank - newNode->rank;
             }
         }
+        */
 };
 
 int main()
 {
-    DWORD tStart;
-    DWORD tEnd;
+
     int numLoop = 1000000;
     vector<int> numList;
     for (int i = 0; i<numLoop; i++)
         numList.push_back(i);
-    vector<int> numList2 = numList;
     random_shuffle(numList.begin(), numList.end());
-    random_shuffle(numList2.begin(), numList2.end());
-    WeakAVLTree<int> test;
-    tStart = GetTickCount();
+    RelaxedAVLTree<int> test;
     for (int i = 0; i<numLoop;i++){
         test.insert(numList[i]);
     }
-
+    random_shuffle(numList.begin(), numList.end());
     for (int j = 0; j<numLoop;j++){
         test.remove(numList[j]);
     }
-    tEnd = GetTickCount();
-    cout<<tEnd-tStart<<endl;
     /*
     test.insert(1);
     test.levelTraversal();
@@ -516,4 +510,5 @@ int main()
     cout << "Hello world!" << endl;
     return 0;
 }
+
 
