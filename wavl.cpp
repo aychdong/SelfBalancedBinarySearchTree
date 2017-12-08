@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <algorithm>
 using std::cout;
 using std::endl;
 
@@ -464,7 +465,21 @@ class WeakAVLTree
 
 int main()
 {
+
+    int numLoop = 10000;
+    vector<int> numList;
+    for (int i = 0; i<numLoop; i++)
+        numList.push_back(i);
+    random_shuffle(numList.begin(), numList.end());
     WeakAVLTree<int> test;
+    for (int i = 0; i<numLoop;i++){
+        test.insert(numList[i]);
+    }
+    random_shuffle(numList.begin(), numList.end());
+    for (int j = 0; j<numLoop;j++){
+        test.remove(numList[j]);
+    }
+    /*
     test.insert(1);
     test.levelTraversal();
     test.insert(2);
@@ -489,6 +504,7 @@ int main()
     test.levelTraversal();
     test.remove(1);
     test.levelTraversal();
+    */
     cout << "Hello world!" << endl;
     return 0;
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <algorithm>
 #include <vector>
 
 using namespace std;
@@ -130,7 +131,7 @@ class SizeBalancedTree{
 
 		void maintain(TreeNode* & node, bool flag){
 			//levelTraversal();
-		    cout<<"maintain"<<node->value<<endl;
+		    //cout<<"maintain"<<node->value<<endl;
 			if (flag ==false){
                 //cout<<"flag == false"<<endl;
                 if (node->left != NULL){
@@ -143,7 +144,7 @@ class SizeBalancedTree{
 					}
 					else return;
 				}
-				else 
+				else
 					return;
 			}
 			else {
@@ -158,11 +159,11 @@ class SizeBalancedTree{
 					}
 					else return;
 				}
-				else 
+				else
 					return;
 			}
 			//levelTraversal();
-			cout<<"Did something"<<endl;
+			//cout<<"Did something"<<endl;
 			if (node->left != NULL)
 				maintain(node->left, false);
 			if (node->right != NULL)
@@ -337,7 +338,20 @@ class SizeBalancedTree{
 
 int main()
 {
+	int numLoop = 1000;
+	vector<int> numList;
+	for (int i = 0; i<numLoop; i++)
+		numList.push_back(i);
+	random_shuffle(numList.begin(), numList.end());
 	SizeBalancedTree<int> test;
+	for (int i = 0; i<numLoop;i++){
+		test.insert(numList[i]);
+	}
+	random_shuffle(numList.begin(), numList.end());
+	for (int j = 0; j<numLoop;j++){
+		test.remove(numList[j]);
+	}
+	/*
 	test.insert(1);
     test.levelTraversal();
     test.insert(2);
@@ -362,6 +376,7 @@ int main()
     test.levelTraversal();
     test.remove(1);
     test.levelTraversal();
+    */
     cout << "Hello world!" << endl;
     return 0;
 }
